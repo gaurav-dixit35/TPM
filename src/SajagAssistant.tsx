@@ -27,7 +27,7 @@ type Recognition = {
   stop: () => void;
 };
 type RecognitionConstructor = new () => Recognition;
-type Props = { people: Patient[]; role: Role; onOpenQueue: (role: Role) => void };
+type Props = { people: Patient[]; role: Role; initialQuestion?: string | null; onQuestionUsed?: () => void; onOpenQueue: (role: Role) => void };
 
 const suggestions = ['What needs attention?', 'Who needs a temperature?', 'Who is ready for discharge?', 'How full is the centre?'];
 
@@ -43,7 +43,34 @@ function answerFor(question: string, people: Patient[], role: Role) {
   const occupancy = Math.round(active.length / config.totalBeds * 100);
   const names = (patients: Patient[]) => patients.slice(0, 5).map((patient) => `${patient.name} (${patient.bed})`).join(', ');
 
-  if (/3 day|three day|cure|cured|fever.free rule|fever free streak/.test(q)) {
+  if (/what is sajag|about sajag|main goal|objective|purpose|what does (sajag|this website|this app) do|what is (this website|this app)/.test(q)) {
+    return 'Sajag is a care-coordination prototype for a 74-bed quarantine centre. Its main goal is to make daily temperatures, doctor visits, verdicts, and discharge handoffs visible to the team so fewer steps are missed and beds can be released promptly after the approved process.';
+  }
+  if (/workflow|patient flow|care relay|handoff process|daily relay/.test(q)) {
+    return 'The daily relay is: Front Desk admits and assigns a bed → Nurse records today’s temperature → Doctor reviews and visits → Doctor records notes and a verdict → Front Desk processes any discharge handoff and releases the bed. Each queue shows the next owner.';
+  }
+  if (/what can each role|roles|who can do|responsibilit|permissions|who is sajag for|who uses|target users/.test(q)) {
+    return 'Nurse: records daily temperatures. Doctor: reviews readings, records visits and verdicts, and recommends discharge. Front Desk: admits patients and processes discharge handoffs. Centre Lead: reviews operational and illustrative outcome data. The role picker is only a demo control, not authentication.';
+  }
+  if (/how (do i|to) (record|enter|save)|record a temperature|temperature workflow/.test(q)) {
+    return 'As Nurse, open the Nurse round, choose a patient waiting for a temperature, enter the measured value in °C, and review any unusual-value confirmation before saving. The prototype allows one official reading per patient per care day. Saving makes the patient available in the Doctor queue.';
+  }
+  if (/admi(ssion|t)|assign a bed/.test(q)) {
+    return 'As Front Desk, open the 74-bed floor plan, select a free bed, enter the fictional demo patient’s details, then assign the bed. The form checks capacity and duplicate names. This is a browser demo, not a real registration system.';
+  }
+  if (/discharg(e|ing)|release a bed/.test(q)) {
+    return 'The Doctor records a verdict and can recommend discharge when the configured fever-free rule is met. That creates a Front Desk handoff. Front Desk reviews and processes it; only then does Sajag mark the patient discharged and free the bed.';
+  }
+  if (/data stored|where.*data|privacy|backend|database|vercel|deploy/.test(q)) {
+    return 'Sajag is a Vercel-ready static React frontend. Demo records and settings are stored in this browser only; there is no backend, shared database, login, or server authorization. Use fictional data only. The Guide answers from fixed rules and current browser records, not a cloud AI model.';
+  }
+  if (/what can you|what can sajag guide|what questions|help me/.test(q)) {
+    return 'I can explain Sajag’s goal, role responsibilities, daily workflow, temperature entry, admission, discharge handoffs, the illustrative recovery rule, demo storage, and current shift counts. I cannot diagnose, choose treatment, or determine clinical discharge.';
+  }
+  if (/features|what does .* include|what is included/.test(q)) {
+    return 'The prototype includes role-owned work queues, temperature capture, doctor visits and verdicts, discharge handoffs, bed occupancy and floor plan, activity history, demo scenarios, outcome illustrations, an on-screen tour, this Guidebook, and the floating Sajag Guide.';
+  }
+  if (/3[\s-]?day|three day|cure|cured|recovery rule|fever.free rule|fever free streak/.test(q)) {
     return `The prototype marks a patient ready after ${config.curedStreakDays} consecutive days below ${config.feverThresholdC.toFixed(1)}°C. A missing reading or fever breaks the streak. This is a demo rule for review; clinical leadership must confirm it before real use.`;
   }
   if (/mortality|death|benchmark|15%|success rate|outcome/.test(q)) {
@@ -87,7 +114,7 @@ function answerFor(question: string, people: Patient[], role: Role) {
   return `I can summarize this demo’s queues, temperature coverage, visits, discharge handoffs, bed occupancy, and the illustrative outcome benchmark. For your current ${role} view, ${nextStep}. Try one of the suggested questions.`;
 }
 
-export function SajagAssistant({ people, role, onOpenQueue }: Props) {
+export function SajagAssistant({ people, role, initialQuestion, onQuestionUsed, onOpenQueue }: Props) {
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState('');
   const [listening, setListening] = useState(false);
@@ -108,6 +135,13 @@ export function SajagAssistant({ people, role, onOpenQueue }: Props) {
   }, []);
 
   useEffect(() => { if (open && feed.current) feed.current.scrollTop = feed.current.scrollHeight; }, [messages, open]);
+
+  useEffect(() => {
+    if (!initialQuestion) return;
+    setOpen(true);
+    setMessages((current) => [...current, { from: 'you', text: initialQuestion }, { from: 'assistant', text: answerFor(initialQuestion, people, role) }]);
+    onQuestionUsed?.();
+  }, [initialQuestion]);
 
   const ask = (question: string) => {
     const clean = question.trim();

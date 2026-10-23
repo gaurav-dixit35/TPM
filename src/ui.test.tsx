@@ -210,4 +210,22 @@ describe('Sajag interface workflows', () => {
     expect(screen.getByText(/Arjun Pawar \(A-04\)/)).toBeTruthy();
     expect(screen.getByText(/no cloud AI/i)).toBeTruthy();
   });
+
+  it('opens the Guide and About pages and routes guide questions to the assistant', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Guide' }));
+    expect(screen.getByRole('heading', { name: 'A clear handoff, at every step.' })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: /What is Sajag’s main goal/ }));
+    expect(await screen.findByText(/Sajag is a care-coordination prototype for a 74-bed quarantine centre/i)).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Guide' }));
+    await user.click(screen.getByRole('button', { name: /How does the 3-day recovery rule work/ }));
+    expect(await screen.findByText(/3 consecutive days below 38.0°C/i)).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'About' }));
+    expect(screen.getByRole('heading', { name: 'Sajag · सजग' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'Reduce avoidable gaps in the daily care routine.' })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'More' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Guide' }));
+    expect(screen.getByRole('heading', { name: 'A clear handoff, at every step.' })).toBeTruthy();
+  });
 });

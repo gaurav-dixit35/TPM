@@ -1,0 +1,235 @@
+/* Sajag's visual language: a calm ward ledger, indexed with its coral signal. */
+:root {
+  font-family: 'Manrope', sans-serif;
+  color: #1b302d;
+  background: #ecefe7;
+  --paper: #ecefe7;
+  --paper2: #e0e6dc;
+  --card: #fbfaf4;
+  --ink: #1b302d;
+  --soft: #65736d;
+  --line: #d1d9cf;
+  --tide: #17665e;
+  --plum: #745169;
+  --ochre: #a86d25;
+  --sage: #52795b;
+  --fever: #df543b;
+  --marigold: #d69a34;
+  --shadow: 0 14px 38px -28px rgba(20, 47, 40, .35);
+}
+
+.app.dark {
+  --paper: #111c1a;
+  --paper2: #1a2925;
+  --card: #1c2b27;
+  --ink: #edf3ec;
+  --soft: #a5b3aa;
+  --line: #34463f;
+  --tide: #78c0ae;
+  --plum: #d1a0bf;
+  --ochre: #e8b569;
+  --sage: #96c09a;
+  --fever: #ff8062;
+  --marigold: #f6c56f;
+  --shadow: 0 18px 46px -30px rgba(0, 0, 0, .8);
+}
+
+.app {
+  background-color: var(--paper);
+}
+
+.app:before {
+  opacity: .34;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--tide) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--tide) 5%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, black, transparent 76%);
+}
+
+.topbar {
+  min-height: 72px;
+  border-bottom-color: color-mix(in srgb, var(--tide) 23%, var(--line));
+  box-shadow: 0 5px 24px -22px rgba(20, 47, 40, .55);
+}
+
+.sim-time-label {
+  color: var(--fever);
+  font: 800 8px 'Manrope', sans-serif;
+  letter-spacing: .12em;
+}
+
+.brand-logo {
+  filter: saturate(1.12);
+}
+
+.greeting-row h1,
+.queue-header h2,
+.temp-modal h2,
+.confirm-modal h2,
+.settings-tile h3,
+.quote-note p,
+.help-guide h3,
+.tour-card h2,
+.bed-wing h3 {
+  font-family: 'Newsreader', Georgia, serif;
+  letter-spacing: -.035em;
+}
+
+.greeting-row h1 {
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 500;
+}
+
+.queue-panel,
+.side-card {
+  border-radius: 13px;
+  box-shadow: var(--shadow);
+}
+
+.queue-panel {
+  border-top: 2px solid color-mix(in srgb, var(--accent) 64%, transparent);
+}
+
+.section-kicker,
+.list-label,
+.room-label,
+.benchmark-label {
+  letter-spacing: .14em;
+}
+
+.patient-row {
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.patient-row:hover {
+  background: color-mix(in srgb, var(--tide) 5%, var(--card));
+}
+
+.role-select,
+.filter-button,
+.primary-action,
+.save-button,
+.view-action {
+  font-family: 'Manrope', sans-serif;
+}
+
+.primary-action,
+.save-button {
+  box-shadow: 0 4px 12px -8px color-mix(in srgb, var(--accent) 75%, transparent);
+}
+
+.fever-tag,
+.attention-indicator,
+.attention-count {
+  color: var(--fever);
+}
+
+.modal-backdrop {
+  overscroll-behavior: contain;
+}
+
+.temp-modal,
+.confirm-modal,
+.tour-card {
+  max-height: min(88vh, 820px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.tour-scrim {
+  z-index: 30;
+}
+
+.tour-card {
+  border-top: 3px solid var(--tide);
+}
+
+.tour-highlight {
+  z-index: 31 !important;
+  border-radius: 10px;
+  background-color: var(--card) !important;
+  outline-color: var(--marigold) !important;
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--marigold) 22%, transparent), 0 12px 36px -15px rgba(0, 0, 0, .45) !important;
+}
+
+.empty-state .view-action {
+  margin-top: 8px;
+}
+
+.doctor-pending {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.urgent-action {
+  padding: 3px 0;
+  border: 0;
+  color: var(--fever);
+  background: transparent;
+  font: 700 10px 'Manrope', sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.urgent-action:hover {
+  color: color-mix(in srgb, var(--fever) 75%, var(--ink));
+}
+
+.patient-name:focus-visible,
+.bed-tile:focus-visible,
+.role-select:focus-visible,
+.filter-button:focus-visible {
+  outline-offset: 3px;
+}
+
+body {
+  min-width: 320px;
+}
+
+:focus-visible {
+  outline-color: var(--marigold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .topbar {
+    padding-inline: 14px;
+    gap: 10px;
+  }
+
+  .centre-label {
+    display: none;
+  }
+
+  .role-label {
+    font-size: 11px;
+  }
+
+  .queue-tools {
+    gap: 6px;
+  }
+
+  .filter-button {
+    max-width: 132px;
+    overflow: hidden;
+  }
+
+  .filter-button span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

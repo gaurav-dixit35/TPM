@@ -83,7 +83,7 @@ describe('Sajag interface workflows', () => {
 
   it('processes a discharge handoff and assigns the released bed to a new patient', async () => {
     const user = userEvent.setup();
-    render(<App />);
+    const { unmount } = render(<App />);
     await user.click(screen.getByRole('button', { name: 'Nurse' }));
     await user.click(screen.getByRole('menuitem', { name: /Front Desk/ }));
     const dischargeRow = screen.getByRole('button', { name: 'Process discharge' }).closest('article');
@@ -99,6 +99,10 @@ describe('Sajag interface workflows', () => {
     await user.type(screen.getByPlaceholderText('Years'), '31');
     await user.click(screen.getByRole('button', { name: 'Assign bed' }));
     await waitFor(() => expect(document.querySelector('.bed-map-footer')?.textContent).toContain('Occupied 74/74'));
+    unmount();
+    render(<App />);
+    await user.click(within(document.querySelector('.desktop-nav') as HTMLElement).getByRole('button', { name: 'Patients' }));
+    expect(screen.getByRole('button', { name: 'Test Patient' })).toBeTruthy();
   });
 
   it('shows the onboarding guide once and allows keyboard dismissal', async () => {

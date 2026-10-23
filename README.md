@@ -9,7 +9,7 @@
 - `npm run build`
 - `npm test`
 
-Deploy on Vercel by importing the repository. Framework: Vite; build: `npm run build`; output: `dist`. `vercel.json` rewrites deep links to the SPA. No environment variables required.
+Deploy on Vercel by importing the repository. Framework: Vite; build: `npm run build`; output: `dist`. `vercel.json` rewrites deep links to the SPA and configures security headers. No environment variables are required.
 
 ## Product concept
 

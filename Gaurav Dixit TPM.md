@@ -3,16 +3,15 @@
 ## Every patient. Every day. Nothing dropped.
 
 **Product management submission · Technical Product Manager**  
-**Prepared by:** [Your name]  
-**Role applied for:** [Role title]  
-**Date:** [Submission date]  
+**Prepared by:** Gaurav Dixit  
+**Role applied for:** Technical Product Manager  
+**Date:** 23 October 2026  
 **Care setting:** Sahyadri Care Centre · 74-bed quarantine facility
 
-> **Live prototype:** [ADD VERIFIED VERCEL URL](https://your-project.vercel.app)  
-> Full URL: `https://your-project.vercel.app` — replace this placeholder with the deployed URL before sharing.  
+> **Deployment status: NOT READY TO SUBMIT.** The repository currently points to `https://tpm-tau.vercel.app`, which returned HTTP 404 when checked on 23 October 2026. Replace this status with a working, verified production URL after redeployment.  
 > Best viewed in Chrome. Start with **Help → Reviewer Walkthrough**. Demo data is fictional and stored in this browser only. This prototype is not for clinical use.
 
-**QR code:** [Insert a QR code that points to the verified live URL here.] Keep the printed URL beside it so the destination remains readable if the code cannot be scanned.
+**QR code:** Add only after deployment; generate it from the verified production URL and print the URL beside it.
 
 ### The idea
 
@@ -81,28 +80,27 @@ Sajag makes the daily care relay visible: **Front Desk admits → Nurse records 
 
 ## Live prototype and technical approach
 
-> **Live prototype:** [ADD VERIFIED VERCEL URL](https://your-project.vercel.app) · Full URL: `https://your-project.vercel.app`  
-> Replace both occurrences with the verified production URL. The URL above is a placeholder, not a claim that a deployment is live.
+> **Prototype URL:** Pending redeployment. The previous URL returned HTTP 404 on 23 October 2026. Do not submit this document until the new production URL has been opened and verified in a private browser window.
 
 | Layer | Current implementation | Why it fits this assessment prototype |
 |---|---|---|
-| UI | React 18, TypeScript, Vite | Typed, component-based front end with a quick static production build |
+| UI | React 18, TypeScript 5.7, Vite 6.4.5 | Typed, component-based front end with a quick static production build |
 | Interaction | React state, browser `localStorage`, Framer Motion | Demonstrates role flows, persistence in one browser, and restrained transitions without introducing a backend |
-| Visual system | Authored CSS; Sora and DM Sans; IBM Plex Mono for readings; Lucide icons | Distinct Sajag visual identity, responsive layout, and readable numeric values without a generic component kit |
-| Hosting | Vercel static deployment; output directory `dist`; `vercel.json` SPA rewrite | Fits Vite static output; no server environment variables are required for the prototype |
-| Quality checks | TypeScript build, Vitest domain tests | Checks that the prototype compiles and that key rules and calculations behave as expected |
+| Visual system | Authored CSS; Newsreader and Manrope; IBM Plex Mono for readings; Lucide icons | Custom paper-and-ward palette, editorial display type, clear operational text, and legible measurements without a generic component kit |
+| Hosting | Vercel static deployment; output directory `dist`; `vercel.json` SPA fallback and security headers | Fits Vite static output; no server environment variables are required for the prototype |
+| Quality checks | TypeScript build, lint check, 64 domain tests, 9 React workflow tests in jsdom, npm audit | Checks compile-time correctness, key rules, interface workflows, and known dependency advisories; no browser end-to-end suite is included |
 
 ### Key screens to capture before export
 
-The images are intentionally left as capture slots: no verified screenshot files were supplied with this document. Capture the deployed build after replacing the demo state and link as needed. Prefer a 1280 px desktop screenshot and a 360–390 px mobile screenshot. Use fictional data only.
+No screenshots are embedded in this draft. Capture the verified deployed build at desktop and 360–390 px mobile widths before exporting the recruiter PDF. Use fictional data only; do not submit this section without the screenshots requested by the assessment.
 
 | Screen | Insert image | Caption |
 |---|---|---|
-| Nurse · Today’s round | `[Insert desktop/mobile screenshot]` | A due queue makes the Nurse’s next reading easy to find and records progress once per patient per day. |
-| Doctor · Ready for your visit | `[Insert desktop/mobile screenshot]` | The Doctor sees measured patients ready for review and an explicit waiting state when the Nurse’s reading is missing. |
-| Front Desk · Discharge handoffs | `[Insert desktop/mobile screenshot]` | Confirmed handoffs are actionable; processing one releases the bed and updates occupancy. |
-| Centre Lead · Centre pulse | `[Insert desktop/mobile screenshot]` | A read-only overview shows the state of the daily relay and operational attention flags. |
-| Beds · Ward floor plan | `[Insert screenshot if space permits]` | The 74-bed map distinguishes occupied, fever-flagged, discharge-ready, and available beds. |
+| Nurse · Today’s round | Pending capture | A due queue makes the Nurse’s next reading easy to find and records progress once per patient per day. |
+| Doctor · Ready for your visit | Pending capture | The Doctor sees measured patients ready for review and an explicit waiting state when the Nurse’s reading is missing. |
+| Front Desk · Discharge handoffs | Pending capture | Confirmed handoffs are actionable; processing one releases the bed and updates occupancy. |
+| Centre Lead · Centre pulse | Pending capture | A read-only overview shows the state of the daily relay and operational attention flags. |
+| Beds · Ward floor plan | Pending capture | The 74-bed map distinguishes occupied, fever-flagged, discharge-ready, and available beds. |
 
 ## Care relay
 
@@ -155,8 +153,8 @@ flowchart LR
 - **Fictional data:** do not enter personally identifiable or real patient information. Browser storage does not provide production security, backup, or an audit trail.
 - **Simulated clock and seeded histories:** demo scenarios and outcome records exist to make the workflow reviewable; they are not facility data or validated quality reporting.
 - **Clinical definitions are provisional:** 38.0°C, suspect ranges, and the interpretation of “three full days” need head-doctor approval before any operational use.
-- **Automated checks:** current project checks include a production build, TypeScript validation, and 64 domain tests. These do not establish clinical safety or production readiness.
-- **Deployment:** the Vercel URL must be verified after deployment. Test it in a private window, test direct routes, and inspect desktop and mobile layouts before submitting.
+- **Automated checks:** on 23 October 2026, `npm run build`, `npm run lint`, and 73 tests passed (64 domain and 9 React workflow tests in jsdom); `npm audit` reported 0 known package vulnerabilities. No browser end-to-end or real-device test has been completed. These checks do not establish clinical safety or production readiness.
+- **Deployment:** the existing Vercel alias returned HTTP 404 during review. A fresh deployment and a successful private-window check are mandatory before submission.
 
 <!-- PAGE BREAK -->
 
@@ -222,25 +220,19 @@ Sprint capacity is **25 points**. Existing commitments consume **15**, leaving *
 
 ## Candidate scorecard and final pick
 
-The assessment supplies a Low / Medium / High value scale of **1 / 3 / 6** and the aggregate selected value of **22**. Complete each story’s description, value, and effort from the original A–J assessment before PDF submission. The ratio formula is `value ÷ effort`; ratios are intentionally left blank where source inputs are unavailable.
+The supplied assessment material gives a Low / Medium / High value scale (**1 / 3 / 6**), the target selection, and aggregate value/effort, but does not include each A–J story’s individual value and effort. I have not invented those inputs. An item-by-item ratio ranking cannot be substantiated from the material available here; the original A–J scoring table is still needed to independently verify the plan.
 
-| Story | Value (1 / 3 / 6) | Effort | Value ÷ effort | Sprint decision |
-|---|---:|---:|---:|---|
-| A | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| B | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| C | [from source brief] | [from source brief] | [calculate] | Leave out |
-| D | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| E | [from source brief] | [from source brief] | [calculate] | Leave out |
-| F | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| G | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| H | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| I | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| J | [from source brief] | [from source brief] | [calculate] | **Pick** |
-| **Selected total (assessment-provided)** | **22** | **8.3** | **22 ÷ 8.3 = 2.65 aggregate** | **A, B, D, F, G, H, I, J** |
+| Decision | Stories | Value | Effort | Notes |
+|---|---|---:|---:|---|
+| **Select** | A, B, D, F, G, H, I, J | **22** | **8.3** | Assessment-provided target; aggregate ratio is 22 ÷ 8.3 = **2.65 value/effort** |
+| **Leave out** | C, E | — | — | The source prompt says adding C requires dropping selected work and reduces value; swapping D for E gives the same value at greater effort. Individual scores were not supplied, so those comparisons cannot be independently recalculated. |
+| **Committed work** | Three stories | — | **15.0** | 3 × 5 points |
+| **Remaining capacity** | Candidate work | — | **10.0** | 25 − 15 |
+| **Total planned load** | Commitments + selected work | — | **23.3 / 25** | Leaves a **1.7-point** buffer |
 
 **Decision:** select **A, B, D, F, G, H, I, J**; leave out **C and E**. This uses 8.3 of the 10 points remaining after existing commitments, for 23.3 of 25 points overall and a 1.7-point buffer.
 
-**Why C is excluded:** the A–J story descriptions and individual scores are not present in the available source material, so a defensible story-specific reason cannot be stated without inventing it. Add the reason from the original prioritization brief before sending this submission.
+**Why C and E are excluded:** the source prompt states that including C requires dropping selected stories and reduces aggregate value; replacing D with E gives the same value at higher effort. The per-story score table is still required to show the actual ratios and independently verify these comparisons.
 
 **Dependency and risk caveat:** the selected set is an assessment-provided target, not an independently optimized plan. Confirm story dependencies, owner availability, and the unprovided item-level estimates before commitment. Protect the 1.7-point buffer for integration, validation, and unplanned work; if a dependency blocks a selected item, re-plan against the visible value/effort inputs rather than silently exceeding capacity.
 
@@ -293,7 +285,7 @@ No baseline or target has been invented. Establish a baseline from reliable faci
 
 ## AI tool disclosure
 
-OpenAI Codex was used as an AI coding assistant to review the prototype, refine interface behavior, and help draft this submission. Product framing, assumptions, and final content should be reviewed and approved by the applicant and the care stakeholders. AI assistance does not validate clinical policy or replace professional judgment.
+OpenAI Codex supported implementation and editorial work on this prototype and submission. I am responsible for reviewing the product decisions and claims before sharing them. Clinical assumptions remain provisional and require approval from care stakeholders.
 
 <!-- PAGE BREAK -->
 
@@ -301,20 +293,19 @@ OpenAI Codex was used as an AI coding assistant to review the prototype, refine 
 
 | Resource | Link / action |
 |---|---|
-| **Live Sajag prototype** | [ADD VERIFIED VERCEL URL](https://your-project.vercel.app) · `https://your-project.vercel.app` *(replace placeholder and verify before sharing)* |
-| **GitHub repository** | [ADD PUBLIC OR REVIEWER-ACCESSIBLE REPOSITORY URL](https://github.com/your-account/your-repository) *(replace placeholder)* |
+| **Live Sajag prototype** | Not ready: previous URL returned HTTP 404 on 23 October 2026. Add a newly deployed and verified URL before submission. |
+| **GitHub repository** | [github.com/gaurav-dixit35/TPM](https://github.com/gaurav-dixit35/TPM) *(public repository; verify it contains the final version before submitting)* |
 | **In-app reviewer guide** | Open the prototype → **Help** → **Reviewer Walkthrough** |
 | **Project documentation** | [README](README.md) · [Prototype guide](docs/PROTOTYPE_GUIDE.md) · [Business rules](docs/BUSINESS_RULES.md) · [Users and features](docs/USERS_AND_FEATURES.md) · [Deployment](docs/DEPLOYMENT.md) |
 | **QR code** | Insert the QR image generated from the verified live URL after deployment |
 
 ### Final submission checklist
 
-- [ ] Replace **Your name**, role title, date, and all three Vercel URL placeholders.
-- [ ] Deploy Sajag and verify the live link from a private/incognito browser window.
-- [ ] Add desktop and mobile screenshots for the key role screens; keep demo records fictional.
+- [ ] Redeploy Sajag and verify the public URL; the current alias returned HTTP 404 on 23 October 2026.
+- [ ] Insert desktop and mobile screenshots from the verified deployment; keep demo records fictional.
 - [ ] Generate the QR code from the verified URL and insert it on page 1 and/or the quick-links page.
-- [ ] Add the repository URL and confirm the reviewer can access it.
-- [ ] Restore the original A–J story descriptions and individual value/effort inputs; calculate each ratio and add the source-backed reason for excluding C.
-- [ ] Export to PDF, confirm hyperlinks and page breaks, and name the final PDF **`Your Name TPM.pdf`** after replacing the placeholder name.
+- [x] Public GitHub repository link identified; confirm it points to the final committed version before submission.
+- [ ] Add the original A–J value/effort table and calculate each ratio. The supplied master prompt lacks individual scores; do not fabricate them.
+- [ ] Export the final reviewed document as **`Gaurav Dixit TPM.pdf`** only after all release blockers are cleared; verify links, pagination, screenshots, and QR code.
 
 **End of submission draft**

@@ -5,6 +5,7 @@ const commonQuestions = [
   'How does the patient workflow work?',
   'How do I record a temperature?',
   'What can each role do?',
+  'How do I read the Centre dashboard?',
   'How does the 3-day recovery rule work?',
   'Where is the demo data stored?',
 ];
@@ -28,7 +29,7 @@ export function Guidebook({ onAsk, onWalkthrough, onSettings }: { onAsk: (questi
         <article><span className="guide-role-icon role-nurse"><Thermometer size={17}/></span><h4>Nurse</h4><ol><li>Open the Nurse round and find patients waiting for a reading.</li><li>Open a patient, check the thermometer value, and save today’s temperature.</li><li>Review a warning if the value is outside the usual range.</li></ol></article>
         <article><span className="guide-role-icon role-doctor"><Stethoscope size={17}/></span><h4>Doctor</h4><ol><li>Open the Doctor queue; patients with no reading stay marked “Waiting for nurse.”</li><li>Review today’s reading and patient history before the visit.</li><li>Save visit notes, treatment plan, and verdict. Urgent override requires a reason.</li></ol></article>
         <article><span className="guide-role-icon role-desk"><BedDouble size={17}/></span><h4>Front Desk</h4><ol><li>Process doctor handoffs in the discharge queue.</li><li>Confirm discharge to record the exit and release the bed.</li><li>Use the ward floor plan to choose an open bed and admit a demo patient.</li></ol></article>
-        <article><span className="guide-role-icon role-lead"><Activity size={17}/></span><h4>Centre Lead</h4><ol><li>Review occupancy, temperature coverage, visit coverage, and fever flags.</li><li>Review demo outcomes against the illustrative 15% reference.</li><li>This prototype role is read-only; outcome figures are not validated facility metrics.</li></ol></article>
+        <article><span className="guide-role-icon role-lead"><Activity size={17}/></span><h4>Centre Lead</h4><ol><li>Start on the Dashboard for occupancy, daily coverage, care activity, and handoffs waiting.</li><li>Open an alert to jump to the role’s queue; review outcomes against the illustrative 15% reference.</li><li>This prototype role is read-only; outcome figures are not validated facility metrics.</li></ol></article>
       </div>
     </section>
 

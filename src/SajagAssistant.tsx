@@ -52,6 +52,9 @@ function answerFor(question: string, people: Patient[], role: Role) {
   if (/what can each role|roles|who can do|responsibilit|permissions|who is sajag for|who uses|target users/.test(q)) {
     return 'Nurse: records daily temperatures. Doctor: reviews readings, records visits and verdicts, and recommends discharge. Front Desk: admits patients and processes discharge handoffs. Centre Lead: reviews operational and illustrative outcome data. The role picker is only a demo control, not authentication.';
   }
+  if (/dashboard|analytics|coverage|trend|centre pulse/.test(q)) {
+    return `Open Dashboard from the main navigation. It summarizes ${active.length} of ${config.totalBeds} occupied beds, temperature and visit coverage, daily handoffs, fever flags, and seven days of recorded activity. The outcome panel uses closed demo cases only; it hides the percentage below 20 cases and is not validated facility reporting. Select a waiting-work row to jump to its role queue.`;
+  }
   if (/how (do i|to) (record|enter|save)|record a temperature|temperature workflow/.test(q)) {
     return 'As Nurse, open the Nurse round, choose a patient waiting for a temperature, enter the measured value in °C, and review any unusual-value confirmation before saving. The prototype allows one official reading per patient per care day. Saving makes the patient available in the Doctor queue.';
   }

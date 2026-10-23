@@ -1,6 +1,6 @@
 import { rules, feverFreeStreak, mortality, relayQueues } from './domain';
 import { describe, expect, it } from 'vitest';
-describe('Baton rules',()=>{
+describe('Sajag rules',()=>{
  it('blocks duplicate daily readings',()=>expect(rules.temperature('Nurse',true,36.8).code).toBe('DUPLICATE'));
  it('blocks implausible temperatures',()=>expect(rules.temperature('Nurse',false,368).allowed).toBe(false));
  it('asks confirmation for suspicious values',()=>expect(rules.temperature('Nurse',false,40.8).level).toBe('confirm'));

@@ -1,4 +1,4 @@
-# BATON
+# Sajag
 
 **Every patient. Every day. Nothing dropped.** A frontend-only care relay prototype for Sahyadri Care Centre.
 
@@ -13,7 +13,7 @@ Deploy on Vercel by importing the repository. Framework: Vite; build: `npm run b
 
 ## Product concept
 
-Baton makes the daily care handoff visible: admission → nurse temperature → doctor visit → verdict → bed release. Role queues answer “what is waiting on me?” Role switcher is a demo simulation, not authentication. Data is fictional and stored in this browser only.
+Sajag makes the daily care handoff visible: admission → nurse temperature → doctor visit → verdict → bed release. Role queues answer “what is waiting on me?” Role switcher is a demo simulation, not authentication. Data is fictional and stored in this browser only.
 
 ## V1 roles
 

@@ -54,10 +54,13 @@
 }
 
 .sim-time-label {
-  color: var(--fever);
+  color: var(--soft);
   font: 800 8px 'Manrope', sans-serif;
   letter-spacing: .12em;
 }
+
+.sim-time-label.clock-live { color: var(--sage); }
+.sim-time-label:not(.clock-live) { color: var(--fever); }
 
 .brand-logo {
   filter: saturate(1.12);
@@ -155,6 +158,51 @@
 
 .empty-state .view-action {
   margin-top: 8px;
+}
+
+.primary-action,
+.view-action,
+.filter-button,
+.role-select,
+.icon-button,
+.save-button,
+.modal-close {
+  min-height: 42px;
+}
+
+.patient-name { font-size: 13px; }
+.patient-name-block > span { font-size: 11px; }
+.queue-header p,
+.settings-tile p,
+.input-hint { font-size: 12px; line-height: 1.55; }
+.searchbox { min-height: 42px; }
+.searchbox input { font-size: 12px; }
+.filter-button { font-size: 11px; }
+.shift-time { min-height: 40px; }
+.activity-empty {
+  min-height: 245px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: var(--soft);
+  text-align: center;
+}
+.activity-empty svg { color: var(--tide); }
+.activity-empty b { color: var(--ink); font: 500 20px 'Newsreader', Georgia, serif; }
+.activity-empty span { max-width: 360px; font-size: 13px; line-height: 1.55; }
+.settings-tile .view-action { margin: 3px 4px 3px 0; }
+.settings-grid { gap: 14px; }
+
+@media (max-width: 760px) {
+  .patient-name { font-size: 12px; }
+  .primary-action, .view-action { min-height: 42px; font-size: 10px; }
+  .filter-button { min-height: 42px; }
+  .settings-grid { grid-template-columns: 1fr; padding-inline: 13px; }
+  .settings-tile p { min-height: 0; }
+  .settings-tile .view-action { margin-block: 4px; }
 }
 
 .doctor-pending {

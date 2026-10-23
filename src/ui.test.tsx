@@ -153,4 +153,17 @@ describe('Sajag interface workflows', () => {
     await user.click(within(document.querySelector('.desktop-nav') as HTMLElement).getByRole('button', { name: 'Patients' }));
     expect(screen.getAllByText(/98.2/).length).toBeGreaterThan(0);
   });
+
+  it('uses the real local clock by default and can enter and leave demo time', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    expect(document.querySelector('.sim-time-label')?.textContent).toBe('LIVE');
+    await user.click(within(document.querySelector('.desktop-nav') as HTMLElement).getByRole('button', { name: 'Settings' }));
+    await user.click(screen.getByRole('button', { name: '+1 hour' }));
+    expect(document.querySelector('.sim-time-label')?.textContent).toBe('DEMO');
+    expect(localStorage.getItem('baton.clockMode')).toBe('demo');
+    await user.click(screen.getByRole('button', { name: 'Use live time' }));
+    expect(document.querySelector('.sim-time-label')?.textContent).toBe('LIVE');
+    expect(localStorage.getItem('baton.clockMode')).toBe('live');
+  });
 });

@@ -10,8 +10,8 @@
 | Urgent exception | Doctor override | Require reason and flag in history | Confirm | Doctor |
 | Cure criterion | Three consecutive full fever-free days | Surface eligibility; no automatic discharge | Nudge | System/Doctor |
 | Missed day | No reading | Break streak; label missing, do not infer afebrile | Nudge | System |
-| Early discharge | Doctor proposes early exit | Require reason and mark separately | Confirm | Doctor |
-| Discharge processing | Front Desk handles confirmed handoff | Record outcome and release bed | Confirm | Front Desk |
+| Discharge eligibility | Doctor recommends discharge only after three consecutive fever-free days | Block recommendation before eligibility; never auto-discharge | Block / Nudge | Doctor / System |
+| Discharge processing | Front Desk handles an eligible Doctor handoff | Record outcome and release bed | Confirm | Front Desk |
 | Capacity | No free bed | Disable admission | Block | Front Desk |
 | Outcome metric | Closed cases | deaths / closed cases × 100; report cohort and period | Nudge | Lead |
 

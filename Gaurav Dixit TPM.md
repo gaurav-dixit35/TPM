@@ -8,10 +8,9 @@
 **Date:** 23 October 2026  
 **Care setting:** Sahyadri Care Centre · 74-bed quarantine facility
 
-> **Deployment status: NOT READY TO SUBMIT.** The repository currently points to `https://tpm-tau.vercel.app`, which returned HTTP 404 when checked on 23 October 2026. Replace this status with a working, verified production URL after redeployment.  
-> Best viewed in Chrome. Start with **Help → Reviewer Walkthrough**. Demo data is fictional and stored in this browser only. This prototype is not for clinical use.
+> **Live prototype:** [https://sajag-care.vercel.app/](https://sajag-care.vercel.app/) · Verified to load on 23 October 2026. Choose a stakeholder on the demo sign-in screen, then start with **Help → Reviewer Walkthrough**. Demo data is fictional and stored in this browser only. This prototype is not for clinical use.
 
-**QR code:** Add only after deployment; generate it from the verified production URL and print the URL beside it.
+**QR code:** Generate from the live URL above and include beside the printed URL in the final PDF.
 
 ### The idea
 
@@ -19,13 +18,13 @@ Sajag makes the daily care relay visible: **Front Desk admits → Nurse records 
 
 ### Review Sajag in three minutes
 
-1. Open **Help** and choose **Reviewer Walkthrough** for the one-time, role-aware on-screen guide.
+1. Open the live prototype, choose a stakeholder role at demo sign-in, then use **Help → Reviewer Walkthrough** for the one-time, role-aware guide.
 2. In **Nurse**, open a patient awaiting a temperature and record one reading.
 3. Switch to **Doctor** and see the patient move into the visit workflow; record a note and verdict.
 4. Switch to **Front Desk** to process a discharge handoff, or open **Beds** to inspect occupancy and free beds.
 5. Open **Centre Lead** to review the operational overview. Visit **Settings** to reset the demo or load a scenario.
 
-> The role switcher is a prototype control, not authentication. Do not enter real patient information.
+> Demo sign-in selects a role; it does not verify identity. The role switcher is a preview control, not authentication. Do not enter real patient information.
 
 <!-- PAGE BREAK -->
 
@@ -50,7 +49,7 @@ Sajag makes the daily care relay visible: **Front Desk admits → Nurse records 
 | Review reading and prior history | Use | Use | Lookup | Read | Store in browser |
 | Doctor visit, note, treatment, verdict | — | Own | Receive handoff | Read | Validate and route |
 | Standard discharge recommendation | — | Own when eligible | Receive | Monitor | Check 3-day rule |
-| Early discharge with reason | — | Propose with reason | Process handoff | Monitor | Preserve reason in demo history |
+| Discharge after eligibility | — | Recommend after the three-day fever-free criterion | Process handoff | Monitor | Block before eligibility |
 | Admit and assign bed | — | — | Own | Monitor | Check capacity and duplicate name |
 | Process discharge and release bed | — | — | Own | Monitor | Update occupancy |
 | Occupancy, coverage, attention, outcomes | — | — | Operational view | Own read-only view | Calculate demo indicators |
@@ -80,7 +79,7 @@ Sajag makes the daily care relay visible: **Front Desk admits → Nurse records 
 
 ## Live prototype and technical approach
 
-> **Prototype URL:** Pending redeployment. The previous URL returned HTTP 404 on 23 October 2026. Do not submit this document until the new production URL has been opened and verified in a private browser window.
+> **Prototype URL:** [https://sajag-care.vercel.app/](https://sajag-care.vercel.app/) · Open the demo sign-in, choose a role, then follow the reviewer walkthrough. This is a frontend demo; role selection is not authentication.
 
 | Layer | Current implementation | Why it fits this assessment prototype |
 |---|---|---|
@@ -88,7 +87,7 @@ Sajag makes the daily care relay visible: **Front Desk admits → Nurse records 
 | Interaction | React state, browser `localStorage`, Framer Motion | Demonstrates role flows, persistence in one browser, and restrained transitions without introducing a backend |
 | Visual system | Authored CSS; Newsreader and Manrope; IBM Plex Mono for readings; Lucide icons | Custom paper-and-ward palette, editorial display type, clear operational text, and legible measurements without a generic component kit |
 | Hosting | Vercel static deployment; output directory `dist`; `vercel.json` SPA fallback and security headers | Fits Vite static output; no server environment variables are required for the prototype |
-| Quality checks | TypeScript build, lint check, 64 domain tests, 9 React workflow tests in jsdom, npm audit | Checks compile-time correctness, key rules, interface workflows, and known dependency advisories; no browser end-to-end suite is included |
+| Quality checks | TypeScript build, lint check, 62 domain tests, 16 React workflow tests in jsdom | Checks compile-time correctness, key rules, and interface workflows; no browser end-to-end suite is included |
 
 ### Key screens to capture before export
 
@@ -132,7 +131,7 @@ flowchart LR
 
 1. Switch to **Doctor**. Patients with a reading are ready for review; patients without one remain marked **Waiting for nurse**.
 2. Open a ready patient, review the available temperature/history, and enter a visit note and treatment plan.
-3. Record a continuing-care verdict or a discharge recommendation. The standard recommendation is surfaced only after the prototype’s three-day eligibility check. Early discharge and deceased outcomes require a reason in the UI.
+3. Record a continuing-care verdict or a discharge recommendation. Sajag blocks a discharge recommendation until the three-day fever-free criterion is met. A deceased outcome requires a reason in the UI.
 4. A discharge verdict creates a Front Desk handoff. A visit itself does not release a bed.
 
 ### Process a discharge (Front Desk)
@@ -153,8 +152,8 @@ flowchart LR
 - **Fictional data:** do not enter personally identifiable or real patient information. Browser storage does not provide production security, backup, or an audit trail.
 - **Simulated clock and seeded histories:** demo scenarios and outcome records exist to make the workflow reviewable; they are not facility data or validated quality reporting.
 - **Clinical definitions are provisional:** 38.0°C, suspect ranges, and the interpretation of “three full days” need head-doctor approval before any operational use.
-- **Automated checks:** on 23 October 2026, `npm run build`, `npm run lint`, and 73 tests passed (64 domain and 9 React workflow tests in jsdom); `npm audit` reported 0 known package vulnerabilities. No browser end-to-end or real-device test has been completed. These checks do not establish clinical safety or production readiness.
-- **Deployment:** the existing Vercel alias returned HTTP 404 during review. A fresh deployment and a successful private-window check are mandatory before submission.
+- **Automated checks:** on 23 October 2026, `npm test` passed 78 tests (62 domain and 16 React workflow tests in jsdom); `npm run build` and `npm run lint` passed. No browser end-to-end or real-device test has been completed. These checks do not establish clinical safety or production readiness.
+- **Deployment:** the user-provided prototype URL is listed above. Confirm the deployed build reflects this demo sign-in and the three-day discharge rule before presenting it as the latest version.
 
 <!-- PAGE BREAK -->
 
@@ -165,7 +164,7 @@ Sajag uses three response levels to communicate what the user can do next. The s
 | Level | Meaning | Example |
 |---|---|---|
 | **Block** | Stop an action that violates an operational rule; explain what is missing or who owns it | Block a duplicate daily reading or a routine Doctor visit before today’s reading |
-| **Confirm** | Allow a deliberate action after the user checks the risk or provides a reason | Confirm a suspect temperature, an early discharge, or a Front Desk bed release |
+| **Confirm** | Allow a deliberate action after the user checks the risk or provides a reason | Confirm a suspect temperature or a Front Desk bed release |
 | **Nudge** | Surface useful status or eligibility without substituting for clinical judgment | Show a three-day fever-free eligibility signal or missing reading |
 
 ## Rule catalogue
@@ -180,12 +179,11 @@ Sajag uses three response levels to communicate what the user can do next. The s
 | Visit ordering | Routine Doctor visit requires today’s temperature; otherwise show **Waiting for nurse** | Block · Doctor | The doctor must retain an approved urgent override that records a reason and is visible in the audit log |
 | Three-day eligibility | Surface standard discharge eligibility after three consecutive fever-free days; a fever or missing day breaks the streak | Nudge · System/Doctor | “Three full days” could mean 72 hours or three defined calendar days. Confirm policy and timezone. Do not auto-discharge. |
 | Standard discharge | Doctor records a recommendation; Front Desk processes the handoff and releases the bed | Nudge → Confirm · Doctor/Front Desk | Define authorized clinical sign-off and required discharge documentation |
-| Early discharge | Require a reason and distinguish it from the standard three-day criterion | Confirm · Doctor | Approval authority and clinical criteria need explicit policy |
 | Admission | Only Front Desk admits; block if no bed is free or an active patient with the same name exists | Block · Front Desk | Use a safe patient identifier; name alone is not a reliable identity match |
 | Outcome reporting | Demo mortality is deaths / closed demo cases × 100 and is compared with the 15% reference | Nudge · Centre Lead/System | Define cohort, time window, transfers, minimum sample, exclusions, confidence, and review cadence |
 | Daily coverage | Show whether active patients have a temperature and a Doctor visit recorded today | Nudge · Centre Lead | Specify the care-day boundary, due time, overdue escalation, and exception handling |
 | System time | Demo clock can advance to show daily queue rollover | Nudge · System | Production timestamps must be server-generated, timezone-aware, and traceable |
-| Privacy and access | Prototype data stays in browser storage; role picker is a demo affordance | Important limitation | Production requires authentication, server authorization, encryption, retention policy, audit, backup, and incident response |
+| Privacy and access | Prototype data stays in browser storage; demo sign-in and role switcher select a view but do not authenticate users | Important limitation | Production requires authentication, server authorization, encryption, retention policy, audit, backup, and incident response |
 
 > **Assumptions to confirm with the head doctor before real use**
 >
@@ -193,7 +191,7 @@ Sajag uses three response levels to communicate what the user can do next. The s
 > 2. Does “three full days without a fever” mean three consecutive calendar-day readings, 72 elapsed hours, or another approved interpretation?
 > 3. Does a missing daily reading break the streak? How should repeat or corrected readings be handled and attributed?
 > 4. What constitutes an urgent visit override, who may authorize it, and what reason must be recorded?
-> 5. Who signs off a standard or early discharge, and what information must be communicated to the patient and Front Desk?
+> 5. Who signs off an eligible discharge, and what information must be communicated to the patient and Front Desk?
 > 6. How should deaths, transfers, readmissions, and incomplete cases affect the mortality/success rate? What cohort period and minimum denominator are appropriate?
 > 7. What daily deadline, escalation route, and local timezone govern missed temperatures and visits?
 
@@ -207,7 +205,7 @@ The brief states an expected mortality rate of 15% and an 85% success benchmark.
 
 ## Capacity and selection
 
-Sprint capacity is **25 points**. Existing commitments consume **15**, leaving **10 points** for the candidate work. The assessment brief specifies the final selection below; the item-level A–J descriptions, value scores, and effort scores were not included in the project materials available for this document. I have preserved the stated selection and totals and have not invented per-item ratios.
+Sprint capacity is **25 points**. Existing commitments consume **15**, leaving **10 points** for the candidate work. Value uses the assessment’s Low / Medium / High scale of **1 / 3 / 6**. The scorecard below uses the supplied A–J story estimates and preserves the assessment’s target selection.
 
 | Capacity calculation | Points |
 |---|---:|
@@ -220,19 +218,32 @@ Sprint capacity is **25 points**. Existing commitments consume **15**, leaving *
 
 ## Candidate scorecard and final pick
 
-The supplied assessment material gives a Low / Medium / High value scale (**1 / 3 / 6**), the target selection, and aggregate value/effort, but does not include each A–J story’s individual value and effort. I have not invented those inputs. An item-by-item ratio ranking cannot be substantiated from the material available here; the original A–J scoring table is still needed to independently verify the plan.
+Ratio is calculated as value divided by effort; a higher ratio indicates more stated value per effort point. Ratios are rounded to two decimal places.
+
+| Story | Value | Effort | Value / effort |
+|---|---:|---:|---:|
+| A | 6 | 1.0 | 6.00 |
+| B | 6 | 3.0 | 2.00 |
+| C | 6 | 5.0 | 1.20 |
+| D | 3 | 2.0 | 1.50 |
+| E | 3 | 3.0 | 1.00 |
+| F | 3 | 1.0 | 3.00 |
+| G | 1 | 0.4 | 2.50 |
+| H | 1 | 0.5 | 2.00 |
+| I | 1 | 0.3 | 3.33 |
+| J | 1 | 0.1 | 10.00 |
 
 | Decision | Stories | Value | Effort | Notes |
 |---|---|---:|---:|---|
 | **Select** | A, B, D, F, G, H, I, J | **22** | **8.3** | Assessment-provided target; aggregate ratio is 22 ÷ 8.3 = **2.65 value/effort** |
-| **Leave out** | C, E | — | — | The source prompt says adding C requires dropping selected work and reduces value; swapping D for E gives the same value at greater effort. Individual scores were not supplied, so those comparisons cannot be independently recalculated. |
+| **Leave out** | C, E | — | — | C uses 5 effort for 6 value and forces a lower-value swap under the 10-point story budget; E offers the same 3 value as D at 1 more effort. |
 | **Committed work** | Three stories | — | **15.0** | 3 × 5 points |
 | **Remaining capacity** | Candidate work | — | **10.0** | 25 − 15 |
 | **Total planned load** | Commitments + selected work | — | **23.3 / 25** | Leaves a **1.7-point** buffer |
 
 **Decision:** select **A, B, D, F, G, H, I, J**; leave out **C and E**. This uses 8.3 of the 10 points remaining after existing commitments, for 23.3 of 25 points overall and a 1.7-point buffer.
 
-**Why C and E are excluded:** the source prompt states that including C requires dropping selected stories and reduces aggregate value; replacing D with E gives the same value at higher effort. The per-story score table is still required to show the actual ratios and independently verify these comparisons.
+**Why C and E are excluded:** C’s 5-point effort does not fit alongside the higher-value selections without dropping more value than it adds. E has the same medium value as D but needs one extra effort point. The selected stories total 22 value and 8.3 effort, leaving 1.7 points of sprint buffer.
 
 **Dependency and risk caveat:** the selected set is an assessment-provided target, not an independently optimized plan. Confirm story dependencies, owner availability, and the unprovided item-level estimates before commitment. Protect the 1.7-point buffer for integration, validation, and unplanned work; if a dependency blocks a selected item, re-plan against the visible value/effort inputs rather than silently exceeding capacity.
 
@@ -293,7 +304,7 @@ OpenAI Codex supported implementation and editorial work on this prototype and s
 
 | Resource | Link / action |
 |---|---|
-| **Live Sajag prototype** | Not ready: previous URL returned HTTP 404 on 23 October 2026. Add a newly deployed and verified URL before submission. |
+| **Live Sajag prototype** | [https://sajag-care.vercel.app/](https://sajag-care.vercel.app/) · User-provided deployment; verify the latest build after redeployment. |
 | **GitHub repository** | [github.com/gaurav-dixit35/TPM](https://github.com/gaurav-dixit35/TPM) *(public repository; verify it contains the final version before submitting)* |
 | **In-app reviewer guide** | Open the prototype → **Help** → **Reviewer Walkthrough** |
 | **Project documentation** | [README](README.md) · [Prototype guide](docs/PROTOTYPE_GUIDE.md) · [Business rules](docs/BUSINESS_RULES.md) · [Users and features](docs/USERS_AND_FEATURES.md) · [Deployment](docs/DEPLOYMENT.md) |
@@ -301,11 +312,11 @@ OpenAI Codex supported implementation and editorial work on this prototype and s
 
 ### Final submission checklist
 
-- [ ] Redeploy Sajag and verify the public URL; the current alias returned HTTP 404 on 23 October 2026.
+- [ ] Redeploy the latest Sajag build and verify the public URL in a private browser window.
 - [ ] Insert desktop and mobile screenshots from the verified deployment; keep demo records fictional.
 - [ ] Generate the QR code from the verified URL and insert it on page 1 and/or the quick-links page.
 - [x] Public GitHub repository link identified; confirm it points to the final committed version before submission.
-- [ ] Add the original A–J value/effort table and calculate each ratio. The supplied master prompt lacks individual scores; do not fabricate them.
+- [ ] Recheck A–J scorecard against the assessment PDF and verify all totals before final export.
 - [ ] Export the final reviewed document as **`Gaurav Dixit TPM.pdf`** only after all release blockers are cleared; verify links, pagination, screenshots, and QR code.
 
 **End of submission draft**

@@ -8,4 +8,4 @@
 
 The app is a static demo, but it does not include a service worker or offline synchronization. Browser storage is local to the current browser and is not a shared or backed-up record system. Do not enter real patient information.
 
-Before submission, verify the production URL in a private browser window and confirm the expected Sajag title, UI, and security headers. The previously linked `tpm-tau.vercel.app` returned HTTP 404 on 23 October 2026 and must not be presented as a working deployment until redeployed and rechecked.
+The user-provided production URL is `https://sajag-care.vercel.app/`. After deploying a new build, open this exact URL in a private browser window and verify the stakeholder demo sign-in, role-specific views, client-side navigation, refresh fallback, and security headers. A Vercel deployment is a static frontend; browser storage is local to each browser and is not shared across staff.

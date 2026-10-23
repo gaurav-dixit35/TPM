@@ -6,6 +6,7 @@ import { App } from './ui';
 beforeEach(() => {
   localStorage.clear();
   localStorage.setItem('sajag.tour.completed', 'true');
+  localStorage.setItem('sajag.demoSession', 'active');
   Object.defineProperty(window, 'matchMedia', {
     configurable: true,
     value: vi.fn().mockImplementation((query: string) => ({
@@ -29,6 +30,26 @@ afterEach(() => {
 });
 
 describe('Sajag interface workflows', () => {
+  it('offers a stakeholder demo sign-in and opens the selected workspace', async () => {
+    localStorage.removeItem('sajag.demoSession');
+    const user = userEvent.setup();
+    render(<App />);
+    expect(screen.getByRole('heading', { name: /Good care moves/ })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: /^Doctor/ }));
+    await user.click(screen.getByRole('button', { name: 'Enter as Doctor' }));
+    expect(screen.getByRole('heading', { name: /Ready for your visit/ })).toBeTruthy();
+    expect(localStorage.getItem('sajag.demoSession')).toBe('active');
+  });
+
+  it('returns to demo sign-in when the user exits the workspace', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Nurse' }));
+    await user.click(screen.getByRole('menuitem', { name: /Exit demo/ }));
+    expect(screen.getByRole('heading', { name: /Good care moves/ })).toBeTruthy();
+    expect(localStorage.getItem('sajag.demoSession')).toBeNull();
+  });
+
   it('switches roles from the role menu', async () => {
     const user = userEvent.setup();
     render(<App />);

@@ -35,7 +35,9 @@ function answerFor(question: string, people: Patient[], role: Role) {
   const q = question.trim().toLowerCase();
   const active = people.filter((patient) => patient.bed !== '—');
   const dueTemp = active.filter((patient) => patient.temp === undefined);
-  const dueVisit = active.filter((patient) => !patient.visited);
+  // A routine doctor visit can only start after today's reading. Keep the
+  // nurse dependency separate so assistant totals match the dashboard.
+  const dueVisit = active.filter((patient) => patient.temp !== undefined && !patient.visited);
   const discharge = active.filter((patient) => patient.pendingDischarge || patient.ready);
   const fever = active.filter((patient) => patient.fever);
   const closed = people.filter((patient) => patient.outcome !== undefined);
@@ -77,9 +79,10 @@ function answerFor(question: string, people: Patient[], role: Role) {
     return `The prototype marks a patient ready after ${config.curedStreakDays} consecutive days below ${config.feverThresholdC.toFixed(1)}°C. A missing reading or fever breaks the streak. This is a demo rule for review; clinical leadership must confirm it before real use.`;
   }
   if (/mortality|death|benchmark|15%|success rate|outcome/.test(q)) {
-    return closed.length
-      ? `In this browser’s demo records, ${deaths} of ${closed.length} closed cases are marked deceased (${(deaths / closed.length * 100).toFixed(1)}%). The displayed benchmark is ${config.mortalityBenchmarkPct}%. This is a simulated cohort, not a validated quality measure.`
-      : 'There are no closed cases in the current records, so a mortality rate cannot be calculated yet.';
+    if (closed.length < config.minSampleSize) {
+      return `There are ${closed.length} closed demo case${closed.length === 1 ? '' : 's'} (${deaths} marked deceased). Sajag withholds a percentage until there are at least ${config.minSampleSize} closed cases; this simulated cohort is not validated facility reporting.`;
+    }
+    return `In this browser’s demo records, ${deaths} of ${closed.length} closed cases are marked deceased (${(deaths / closed.length * 100).toFixed(1)}%). The displayed benchmark is ${config.mortalityBenchmarkPct}%. This is a simulated cohort, not a validated quality measure.`;
   }
   if (/occup|bed|capacity|full|available/.test(q)) {
     return `The demo ward has ${active.length} of ${config.totalBeds} beds occupied (${occupancy}%). ${config.totalBeds - active.length} ${config.totalBeds - active.length === 1 ? 'bed is' : 'beds are'} available.`;
@@ -91,7 +94,9 @@ function answerFor(question: string, people: Patient[], role: Role) {
     return discharge.length ? `${discharge.length} active ${discharge.length === 1 ? 'patient is' : 'patients are'} marked ready or awaiting discharge: ${names(discharge)}${discharge.length > 5 ? `, and ${discharge.length - 5} more` : ''}. Front Desk releases the bed after processing the handoff.` : 'No active patient is currently marked ready or awaiting discharge.';
   }
   if (/visit|doctor|review/.test(q)) {
-    return dueVisit.length ? `${dueVisit.length} active ${dueVisit.length === 1 ? 'patient still needs' : 'patients still need'} a doctor visit: ${names(dueVisit)}${dueVisit.length > 5 ? `, and ${dueVisit.length - 5} more` : ''}. Routine visits follow the nurse’s temperature entry.` : 'Every active patient has a doctor visit marked complete today in this demo.';
+    const waitingForReading = dueTemp.length;
+    const waitingText = waitingForReading ? ` ${waitingForReading} more ${waitingForReading === 1 ? 'patient is' : 'patients are'} waiting for a nurse reading before routine review.` : '';
+    return dueVisit.length ? `${dueVisit.length} active ${dueVisit.length === 1 ? 'patient still needs' : 'patients still need'} a doctor visit: ${names(dueVisit)}${dueVisit.length > 5 ? `, and ${dueVisit.length - 5} more` : ''}.${waitingText}` : waitingForReading ? `No routine doctor visits are unblocked yet. ${waitingForReading} active ${waitingForReading === 1 ? 'patient is' : 'patients are'} waiting for a nurse reading: ${names(dueTemp)}${dueTemp.length > 5 ? `, and ${dueTemp.length - 5} more` : ''}.` : 'Every active patient has a doctor visit marked complete today in this demo.';
   }
   if (/attention|urgent|fever|hot/.test(q)) {
     const parts = [`${fever.length} active patient${fever.length === 1 ? '' : 's'} flagged with fever${fever.length ? `: ${names(fever)}` : ''}`];
@@ -110,10 +115,10 @@ function answerFor(question: string, people: Patient[], role: Role) {
   const nextStep = role === 'Nurse'
     ? `${dueTemp.length} temperature${dueTemp.length === 1 ? '' : 's'} due${dueTemp.length ? `, starting with ${names(dueTemp.slice(0, 1))}` : ''}`
     : role === 'Doctor'
-      ? `${dueVisit.length} doctor visit${dueVisit.length === 1 ? '' : 's'} due${dueVisit.length ? `, starting with ${names(dueVisit.slice(0, 1))}` : ''}`
+      ? `${dueVisit.length} measured patient${dueVisit.length === 1 ? '' : 's'} ready for review${dueVisit.length ? `, starting with ${names(dueVisit.slice(0, 1))}` : ''}; ${dueTemp.length} waiting for nurse readings`
       : role === 'Front Desk'
         ? `${discharge.length} discharge handoff${discharge.length === 1 ? '' : 's'} ready${discharge.length ? `, starting with ${names(discharge.slice(0, 1))}` : ''}`
-        : `${fever.length} fever flag${fever.length === 1 ? '' : 's'} and ${dueTemp.length + dueVisit.length} care task${dueTemp.length + dueVisit.length === 1 ? '' : 's'} due`;
+        : `${fever.length} fever flag${fever.length === 1 ? '' : 's'}, ${dueTemp.length} temperature${dueTemp.length === 1 ? '' : 's'} due, and ${dueVisit.length} measured patient${dueVisit.length === 1 ? '' : 's'} awaiting doctor review`;
   return `I can summarize this demo’s queues, temperature coverage, visits, discharge handoffs, bed occupancy, and the illustrative outcome benchmark. For your current ${role} view, ${nextStep}. Try one of the suggested questions.`;
 }
 

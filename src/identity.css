@@ -521,6 +521,7 @@ body {
 .dash-date>span b { color:var(--ink); font-size:10px; }
 .dash-date>small { color:var(--sage); font:700 8px 'IBM Plex Mono',monospace; letter-spacing:.6px; }
 .dash-live-dot { width:7px; height:7px; border-radius:50%; background:var(--sage); box-shadow:0 0 0 4px color-mix(in srgb,var(--sage) 13%,transparent); animation:dash-pulse 2s infinite; }
+.dash-live-dot.dash-demo-dot { background:var(--ochre); box-shadow:0 0 0 4px color-mix(in srgb,var(--ochre) 13%,transparent); animation:none; }
 @keyframes dash-pulse { 50% { box-shadow:0 0 0 7px transparent; } }
 .dash-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:11px; }
 .dash-metric,.dash-panel { min-width:0; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:var(--shadow); }

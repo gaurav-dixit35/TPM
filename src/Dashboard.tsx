@@ -19,6 +19,7 @@ type DashboardPatient = {
 type Props = {
   people: DashboardPatient[];
   now: Date;
+  clockMode: 'live' | 'demo';
   onOpen: (role: 'Nurse' | 'Doctor' | 'Front Desk' | 'Centre Lead', filter?: string) => void;
 };
 
@@ -57,7 +58,7 @@ function TrendChart({ people, now, reduce }: { people: DashboardPatient[]; now: 
   </div>;
 }
 
-export function Dashboard({ people, now, onOpen }: Props) {
+export function Dashboard({ people, now, clockMode, onOpen }: Props) {
   const reduce = useReducedMotion();
   const active = people.filter((person) => person.bed !== '—');
   const occupied = active.length;
@@ -80,14 +81,14 @@ export function Dashboard({ people, now, onOpen }: Props) {
     { label: 'Beds occupied', value: `${occupied}`, suffix: '/ 74', detail: `${occupancyPct}% of ward capacity`, icon: BedDouble, tone: 'tide', progress: occupancyPct },
     { label: 'Temperatures due', value: `${dueTemps}`, suffix: 'patients', detail: `${tempPct}% measured today`, icon: Thermometer, tone: 'plum', progress: tempPct },
     { label: 'Doctor visits due', value: `${dueVisits}`, suffix: 'patients', detail: `${visitPct}% visited today`, icon: Stethoscope, tone: 'ochre', progress: visitPct },
-    { label: 'Discharge handoffs', value: `${handoffs}`, suffix: 'to process', detail: `${eligible} currently eligible`, icon: ClipboardCheck, tone: 'sage', progress: occupied ? Math.round(handoffs / occupied * 100) : 0 },
+    { label: 'Front Desk handoffs', value: `${handoffs}`, suffix: 'to process', detail: `${eligible} currently eligible`, icon: ClipboardCheck, tone: 'sage', progress: occupied ? Math.round(handoffs / occupied * 100) : 0 },
   ];
   const openRoleQueue = (role: Props['onOpen'] extends (role: infer R, filter?: string) => void ? R : never, filter?: string) => onOpen(role, filter);
 
   return <div className="dashboard-page">
     <motion.section className="dash-hero" data-tour="dashboard" initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35 }}>
-      <div className="dash-hero-copy"><span className="section-kicker"><Activity size={13}/> CENTRE OPERATIONS · LIVE DEMO</span><h2>Ward intelligence<span>.</span></h2><p>One view of today’s care, capacity, and the work waiting across the relay.</p></div>
-      <div className="dash-date"><CalendarDays size={16}/><span><small>CARE DAY</small><b>{dayLabel}</b></span><i className="dash-live-dot"/><small>LIVE</small></div>
+      <div className="dash-hero-copy"><span className="section-kicker"><Activity size={13}/> CENTRE OPERATIONS · BROWSER DEMO</span><h2>Ward intelligence<span>.</span></h2><p>One view of today’s care, capacity, and the work waiting across the relay.</p></div>
+      <div className="dash-date"><CalendarDays size={16}/><span><small>CARE DAY</small><b>{dayLabel}</b></span><i className={`dash-live-dot ${clockMode === 'demo' ? 'dash-demo-dot' : ''}`}/><small>{clockMode === 'live' ? 'LIVE' : 'SIMULATED'}</small></div>
     </motion.section>
 
     <section className="dash-metrics" aria-label="Centre key indicators">
@@ -108,8 +109,8 @@ export function Dashboard({ people, now, onOpen }: Props) {
         <div className="dash-panel-heading"><div><span className="section-kicker">TODAY’S RELAY</span><h3>Where work is waiting</h3><p>Active patients · {occupied} total</p></div><span className="dash-relay-total"><Users size={15}/>{occupied}</span></div>
         <div className="dash-relay-list">
           <button onClick={() => openRoleQueue('Nurse', 'Waiting for nurse')}><span className="dash-relay-icon relay-tide"><Thermometer size={16}/></span><span><b>Temperature due</b><small>Nurse · daily round</small></span><strong>{dueTemps}</strong><ChevronRight size={15}/></button>
-          <button onClick={() => openRoleQueue('Doctor')}><span className="dash-relay-icon relay-plum"><Stethoscope size={16}/></span><span><b>Doctor review due</b><small>Measured, not yet visited</small></span><strong>{dueVisits}</strong><ChevronRight size={15}/></button>
-          <button onClick={() => openRoleQueue('Front Desk')}><span className="dash-relay-icon relay-ochre"><ClipboardCheck size={16}/></span><span><b>Handoff to process</b><small>Doctor recommendation · Front Desk</small></span><strong>{handoffs}</strong><ChevronRight size={15}/></button>
+          <button onClick={() => openRoleQueue('Doctor', 'Doctor visit due')}><span className="dash-relay-icon relay-plum"><Stethoscope size={16}/></span><span><b>Doctor review due</b><small>Measured, not yet visited</small></span><strong>{dueVisits}</strong><ChevronRight size={15}/></button>
+          <button onClick={() => openRoleQueue('Front Desk')}><span className="dash-relay-icon relay-ochre"><ClipboardCheck size={16}/></span><span><b>Bed handoff to process</b><small>Doctor verdict · Front Desk</small></span><strong>{handoffs}</strong><ChevronRight size={15}/></button>
           <button onClick={() => openRoleQueue('Nurse', 'Fever today')}><span className="dash-relay-icon relay-fever"><CircleAlert size={16}/></span><span><b>Fever flags</b><small>Needs clinical attention</small></span><strong>{fever}</strong><ChevronRight size={15}/></button>
         </div>
       </section>
@@ -123,9 +124,9 @@ export function Dashboard({ people, now, onOpen }: Props) {
 
       <section className="dash-panel dash-outcome-panel" data-tour="outcomes">
         <div className="dash-panel-heading"><div><span className="section-kicker">CLOSED DEMO CASES</span><h3>Outcome monitor</h3><p>Illustrative cohort · not facility reporting</p></div><span className="dash-outcome-icon"><HeartPulse size={17}/></span></div>
-        <div className="dash-outcome-stats"><div><span>Survival</span><b>{closed.length >= 20 ? `${survival.toFixed(1)}%` : '—'}</b></div><div><span>Mortality</span><b className={closed.length >= 20 && mortality > 15 ? 'outcome-over' : ''}>{closed.length >= 20 ? `${mortality.toFixed(1)}%` : '—'}</b></div><div><span>Closed cases</span><b>{closed.length}</b></div></div>
+        <div className="dash-outcome-stats"><div><span>Survival</span><b>{closed.length >= config.minSampleSize ? `${survival.toFixed(1)}%` : '—'}</b></div><div><span>Mortality</span><b className={closed.length >= config.minSampleSize && mortality > 15 ? 'outcome-over' : ''}>{closed.length >= config.minSampleSize ? `${mortality.toFixed(1)}%` : '—'}</b></div><div><span>Closed cases</span><b>{closed.length}</b></div></div>
         <div className="dash-benchmark"><div className="dash-benchmark-track"><motion.i initial={reduce ? false : { width: 0 }} animate={{ width: `${Math.min(survival, 100)}%` }} transition={{ duration: .8 }}/><span/></div><div><span>85% survival reference</span><span>15% mortality reference</span></div></div>
-        <p className="dash-caveat"><CircleAlert size={13}/>{closed.length < 20 ? `Only ${closed.length} closed demo cases; percentage is hidden until the 20-case display threshold.` : `Demo-only sample. ${deaths} deaths among ${closed.length} closed cases; cohort and time period are not validated.`}</p>
+        <p className="dash-caveat"><CircleAlert size={13}/>{closed.length < config.minSampleSize ? `Only ${closed.length} closed demo cases; percentage is hidden until the 20-case display threshold.` : `Demo-only sample. ${deaths} deaths among ${closed.length} closed cases; cohort and time period are not validated.`}</p>
       </section>
     </div>
 

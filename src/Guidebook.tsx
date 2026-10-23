@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Check, CircleHelp, HeartPulse, ShieldCheck, Users } from 'lucide-react';
+import { Activity, ArrowRight, BedDouble, Check, CircleHelp, HeartPulse, ShieldCheck, Stethoscope, Thermometer, UserPlus } from 'lucide-react';
 
 const commonQuestions = [
   'What is Sajag’s main goal?',
@@ -20,15 +20,15 @@ export function Guidebook({ onAsk, onWalkthrough, onSettings }: { onAsk: (questi
         ['03','Visit','Doctor reviews the reading, sees the patient, and records notes and a verdict.'],
         ['04','Verdict','A doctor’s discharge recommendation becomes a visible handoff for Front Desk.'],
         ['05','Release','Front Desk processes the handoff and releases the bed.'],
-      ].map(([number,title,body])=><article className="workflow-step" key={number}><span>{number}</span><h4>{title}</h4><p>{body}</p></article>)}</div>
+      ].map(([number,title,body],index)=>{const icons=[<UserPlus size={17}/>,<Thermometer size={17}/>,<Stethoscope size={17}/>,<Check size={17}/>,<BedDouble size={17}/>];return <article className="workflow-step" key={number}><span className="workflow-step-icon" aria-hidden="true">{icons[index]}</span><small>{number}</small><h4>{title}</h4><p>{body}</p></article>;})}</div>
     </section>
 
     <section className="guide-section" aria-labelledby="roles-title"><div className="guide-section-heading"><div><span className="section-kicker">WHO DOES WHAT</span><h3 id="roles-title">Four roles, one shared relay.</h3></div><p>Use the role picker to preview each role. It is a demo control, not a login.</p></div>
       <div className="guide-roles">
-        <article><span className="guide-role-icon role-nurse"><HeartPulse size={17}/></span><h4>Nurse</h4><ol><li>Open the Nurse round and find patients waiting for a reading.</li><li>Open a patient, check the thermometer value, and save today’s temperature.</li><li>Review a warning if the value is outside the usual range.</li></ol></article>
-        <article><span className="guide-role-icon role-doctor"><Check size={17}/></span><h4>Doctor</h4><ol><li>Open the Doctor queue; patients with no reading stay marked “Waiting for nurse.”</li><li>Review today’s reading and patient history before the visit.</li><li>Save visit notes, treatment plan, and verdict. Urgent override requires a reason.</li></ol></article>
-        <article><span className="guide-role-icon role-desk"><Users size={17}/></span><h4>Front Desk</h4><ol><li>Process doctor handoffs in the discharge queue.</li><li>Confirm discharge to record the exit and release the bed.</li><li>Use the ward floor plan to choose an open bed and admit a demo patient.</li></ol></article>
-        <article><span className="guide-role-icon role-lead"><BookOpen size={17}/></span><h4>Centre Lead</h4><ol><li>Review occupancy, temperature coverage, visit coverage, and fever flags.</li><li>Review demo outcomes against the illustrative 15% reference.</li><li>This prototype role is read-only; outcome figures are not validated facility metrics.</li></ol></article>
+        <article><span className="guide-role-icon role-nurse"><Thermometer size={17}/></span><h4>Nurse</h4><ol><li>Open the Nurse round and find patients waiting for a reading.</li><li>Open a patient, check the thermometer value, and save today’s temperature.</li><li>Review a warning if the value is outside the usual range.</li></ol></article>
+        <article><span className="guide-role-icon role-doctor"><Stethoscope size={17}/></span><h4>Doctor</h4><ol><li>Open the Doctor queue; patients with no reading stay marked “Waiting for nurse.”</li><li>Review today’s reading and patient history before the visit.</li><li>Save visit notes, treatment plan, and verdict. Urgent override requires a reason.</li></ol></article>
+        <article><span className="guide-role-icon role-desk"><BedDouble size={17}/></span><h4>Front Desk</h4><ol><li>Process doctor handoffs in the discharge queue.</li><li>Confirm discharge to record the exit and release the bed.</li><li>Use the ward floor plan to choose an open bed and admit a demo patient.</li></ol></article>
+        <article><span className="guide-role-icon role-lead"><Activity size={17}/></span><h4>Centre Lead</h4><ol><li>Review occupancy, temperature coverage, visit coverage, and fever flags.</li><li>Review demo outcomes against the illustrative 15% reference.</li><li>This prototype role is read-only; outcome figures are not validated facility metrics.</li></ol></article>
       </div>
     </section>
 

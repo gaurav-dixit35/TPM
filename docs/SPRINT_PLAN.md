@@ -1,0 +1,3 @@
+# Q4 — Sprint planning
+
+Capacity is 25 points; three committed stories consume 15, leaving 10. The pasted assessment’s A–J descriptions and effort/value table were not included in the supplied text excerpt, so the mandated set cannot be independently recomputed here. The source brief’s stated target is A, B, D, F, G, H, I, J (value 22, effort 8.3; total load 23.3, buffer 1.7), leaving C and E. Treat this as an assessment-provided answer, not a validated optimization. A production planner should expose assumptions, dependencies, and capacity and solve a bounded knapsack against the visible inputs.

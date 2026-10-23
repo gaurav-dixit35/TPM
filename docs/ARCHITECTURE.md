@@ -1,0 +1,3 @@
+# Architecture
+
+Vite serves a static React SPA; TypeScript domain functions hold policy and derived selectors feed UI. Prototype persistence uses localStorage, which is device-local and not a multi-user source of truth. Simulated role switching is not authentication. Proposed API: `POST /readings`, `/visits`, `/verdicts`, `/admissions`, `/discharges`; `GET /queues/:role`, `/stats`. Tables: staff, patients, beds, readings, visits, verdicts, activity_events, configuration. Server validates permissions, uniqueness, timestamps and transitions. Future migration requires offline conflict handling, audit trail, backup, retention and access controls.

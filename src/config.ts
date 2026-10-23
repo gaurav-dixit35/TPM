@@ -1,0 +1,1 @@
+export const config = { feverThresholdC: 38, plausibleMinC: 34, plausibleMaxC: 42, suspectLowC: 35, suspectHighC: 40.5, suspectJumpC: 2, curedStreakDays: 3, overdueHour: 14, correctionWindowMin: 30, totalBeds: 74, mortalityBenchmarkPct: 15, amberFromPct: 13, minSampleSize: 20 } as const;

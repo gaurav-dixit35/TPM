@@ -1,0 +1,3 @@
+# Q2 — Prototype guide
+
+Flow: Front Desk admits → Nurse records temperature → Doctor reviews and visits → Doctor records verdict → Front Desk processes discharge → Centre Lead reviews aggregate outcomes. Choose a role in the top bar. Nurse selects Record temperature, enters °C and saves. Doctor sees measured patients as ready; an unmeasured patient is explicitly waiting on Nurse. Doctor visit should create a verdict/handoff; Front Desk processes a confirmed handoff and frees a bed. Patient names open their profile view. Data is fictional and local to the browser. Reviewer screenshots should be captured at desktop and 360px mobile widths.

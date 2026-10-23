@@ -1,0 +1,3 @@
+# Design system — Paper & Pulse
+
+Warm notebook-inspired paper, ink, tide green, doctor plum, desk ochre, sage completion, and coral fever. Fraunces headlines, Hanken Grotesk UI, IBM Plex Mono measurements. Signature patterns: relay track, fever-free pebbles, temperature ribbon, bed map, dual coverage ring and mortality gauge. Top shift bar and focused queues avoid sidebar-template conventions. Motion gives feedback but never blocks an action; reduced-motion preference is honored. Accessibility targets: keyboard access, focus visibility, clear text labels, AA contrast, 44px touch controls, and no color-only status. Verify contrast in final palette before production.

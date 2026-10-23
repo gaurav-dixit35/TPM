@@ -199,4 +199,15 @@ describe('Sajag interface workflows', () => {
     expect(saved.find((patient) => patient.id === 4)?.temp).toBeUndefined();
     expect(screen.getByRole('status').textContent).toContain('temperature entry undone');
   });
+
+  it('opens the floating Sajag Guide and answers from the current demo records', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Open Sajag Guide' }));
+    expect(screen.getByRole('region', { name: 'Sajag assistant' })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: /Who needs a temperature/ }));
+    expect(screen.getByText(/active patients are missing today’s temperature/i)).toBeTruthy();
+    expect(screen.getByText(/Arjun Pawar \(A-04\)/)).toBeTruthy();
+    expect(screen.getByText(/no cloud AI/i)).toBeTruthy();
+  });
 });

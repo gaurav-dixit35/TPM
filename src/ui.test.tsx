@@ -89,7 +89,8 @@ describe('Sajag interface workflows', () => {
     const dischargeRow = screen.getByRole('button', { name: 'Process discharge' }).closest('article');
     expect(dischargeRow).not.toBeNull();
     await user.click(within(dischargeRow as HTMLElement).getByRole('button', { name: 'Process discharge' }));
-    await user.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Process discharge' }));
+    const dischargeDialogs = screen.getAllByRole('dialog');
+    await user.click(within(dischargeDialogs[dischargeDialogs.length - 1]).getByRole('button', { name: 'Process discharge' }));
     await waitFor(() => expect(document.querySelector('.shift-stat strong')?.textContent).toContain('73'));
 
     await user.click(screen.getByRole('button', { name: /Ward floor plan/ }));
@@ -113,7 +114,7 @@ describe('Sajag interface workflows', () => {
   it('moves through the guide and can replay it from Help after completion', async () => {
     const user = userEvent.setup();
     render(<App />);
-    await user.click(screen.getByRole('button', { name: 'Help' }));
+    await user.click(document.querySelector('.help-button') as HTMLElement);
     await user.click(screen.getByRole('button', { name: 'Replay the on-screen guide' }));
     expect(await screen.findByRole('dialog', { name: /Welcome to your round/ })).toBeTruthy();
     await user.click(screen.getByRole('button', { name: /Next/ }));
@@ -165,5 +166,37 @@ describe('Sajag interface workflows', () => {
     await user.click(screen.getByRole('button', { name: 'Use live time' }));
     expect(document.querySelector('.sim-time-label')?.textContent).toBe('LIVE');
     expect(localStorage.getItem('baton.clockMode')).toBe('live');
+  });
+
+  it('walks a reviewer through real nurse, doctor, and Front Desk actions', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(document.querySelector('.help-button') as HTMLElement);
+    await user.click(screen.getByRole('button', { name: 'Start the 3-minute walkthrough' }));
+    expect(screen.getByRole('heading', { name: /Nurse · Record a temperature/ })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Open Arjun Pawar' }));
+    await user.click(screen.getByRole('button', { name: /Save temperature/ }));
+    expect(screen.getByRole('heading', { name: /Doctor · Review the patient/ })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Open Arjun’s visit' }));
+    await user.type(screen.getByLabelText('Visit notes'), 'Reviewed and stable.');
+    await user.click(screen.getByRole('button', { name: /Save visit & verdict/ }));
+    expect(screen.getByRole('heading', { name: /Front Desk · Complete the handoff/ })).toBeTruthy();
+    await user.click(screen.getByRole('button', { name: 'Process Ananya’s discharge' }));
+    const dischargeDialogs = screen.getAllByRole('dialog');
+    await user.click(within(dischargeDialogs[dischargeDialogs.length - 1]).getByRole('button', { name: 'Process discharge' }));
+    await waitFor(() => expect(screen.queryByRole('region', { name: /Walkthrough step/ })).toBeNull());
+    expect(screen.getByRole('status').textContent).toContain('Walkthrough complete');
+  });
+
+  it('offers a short undo after recording a temperature and restores the due queue', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+    await user.click(screen.getByRole('button', { name: 'Arjun Pawar' }));
+    await user.click(screen.getByRole('button', { name: /Save temperature/ }));
+    await user.click(screen.getByRole('button', { name: 'Undo' }));
+    expect(screen.getByRole('button', { name: 'Arjun Pawar' })).toBeTruthy();
+    const saved = JSON.parse(localStorage.getItem('baton.patients') || '[]') as Array<{ id: number; temp?: number }>;
+    expect(saved.find((patient) => patient.id === 4)?.temp).toBeUndefined();
+    expect(screen.getByRole('status').textContent).toContain('temperature entry undone');
   });
 });

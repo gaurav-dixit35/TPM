@@ -167,15 +167,17 @@
 .icon-button,
 .save-button,
 .modal-close {
-  min-height: 42px;
+  min-height: 44px;
+  touch-action: manipulation;
 }
 
 .patient-name { font-size: 13px; }
+.patient-name { min-height: 44px; display: inline-flex; align-items: center; }
 .patient-name-block > span { font-size: 11px; }
 .queue-header p,
 .settings-tile p,
 .input-hint { font-size: 12px; line-height: 1.55; }
-.searchbox { min-height: 42px; }
+.searchbox { min-height: 44px; }
 .searchbox input { font-size: 12px; }
 .filter-button { font-size: 11px; }
 .shift-time { min-height: 40px; }
@@ -195,14 +197,61 @@
 .activity-empty span { max-width: 360px; font-size: 13px; line-height: 1.55; }
 .settings-tile .view-action { margin: 3px 4px 3px 0; }
 .settings-grid { gap: 14px; }
+.urgent-action { min-height: 44px; padding: 0 4px; }
+.desktop-nav button, .mobile-dock button, .dropdown-menu button { min-height: 44px; }
+.reviewer-prompt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 0 22px;
+  padding: 18px 20px;
+  border: 1px solid color-mix(in srgb, var(--tide) 30%, var(--line));
+  border-left: 4px solid var(--tide);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--card) 94%, var(--tide));
+  box-shadow: var(--shadow);
+}
+.reviewer-prompt h2 { margin: 5px 0 3px; font: 500 22px 'Newsreader', Georgia, serif; color: var(--ink); }
+.reviewer-prompt p { margin: 0; color: var(--soft); font-size: 13px; line-height: 1.5; }
+.reviewer-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: none; }
+.toast { gap: 10px; }
+.toast > span:nth-child(2) { line-height: 1.4; }
+.toast-undo { min-height: 40px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--accent); background: var(--paper); font: 700 12px 'Manrope', sans-serif; cursor: pointer; }
+.toast-undo:hover { border-color: var(--accent); }
+.fever-ribbon { margin-top: 13px; padding: 12px 10px 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.ribbon-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ribbon-heading > span:last-child { color: var(--soft); font: 10px 'IBM Plex Mono', monospace; }
+.fever-ribbon svg { display: block; width: 100%; height: auto; margin-top: 6px; overflow: visible; }
+.ribbon-threshold { stroke: var(--fever); stroke-width: 1; stroke-dasharray: 4 4; opacity: .8; }
+.ribbon-threshold-label,.ribbon-day { fill: var(--soft); font: 7px 'IBM Plex Mono', monospace; }
+.ribbon-path { fill: none; stroke: var(--tide); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ribbon-calm { fill: var(--sage); stroke: var(--card); stroke-width: 2; }
+.ribbon-fever { fill: var(--fever); stroke: var(--card); stroke-width: 2; }
+.ribbon-missing { fill: var(--paper); stroke: var(--marigold); stroke-width: 1.5; stroke-dasharray: 2 2; }
+.ribbon-legend { display: flex; flex-wrap: wrap; gap: 12px; color: var(--soft); font-size: 10px; }
+.ribbon-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.ribbon-key { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.calm-key { background: var(--sage); }
+.missing-key { background: transparent; border: 1px dashed var(--marigold); }
 
 @media (max-width: 760px) {
   .patient-name { font-size: 12px; }
-  .primary-action, .view-action { min-height: 42px; font-size: 10px; }
-  .filter-button { min-height: 42px; }
+  .primary-action, .view-action { min-height: 44px; font-size: 10px; }
+  .filter-button { min-height: 44px; }
+  .bed-tile { min-height: 44px; height: 44px; }
+  .patient-name { min-height: 44px; }
   .settings-grid { grid-template-columns: 1fr; padding-inline: 13px; }
   .settings-tile p { min-height: 0; }
   .settings-tile .view-action { margin-block: 4px; }
+  .reviewer-prompt { align-items: stretch; flex-direction: column; gap: 12px; padding: 15px; }
+  .reviewer-prompt h2 { font-size: 20px; }
+  .reviewer-actions { align-items: stretch; flex-direction: column; }
+  .reviewer-actions button { width: 100%; }
+  .toast { width: min(94vw, 520px); align-items: flex-start; }
+  .toast > span:nth-child(2) { flex: 1; }
+  .ribbon-heading > span:last-child { font-size: 9px; }
+  .mobile-dock button { width: 20%; min-width: 0; }
 }
 
 .doctor-pending {
